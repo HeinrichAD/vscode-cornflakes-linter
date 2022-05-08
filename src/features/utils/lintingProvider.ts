@@ -1,10 +1,10 @@
 'use strict';
 
-import * as cp from 'child_process';
-
+import { spawn } from 'child_process';
 import * as vscode from 'vscode';
 
 import { ThrottledDelayer } from './async';
+
 
 enum RunTrigger {
   onSave,
@@ -124,20 +124,24 @@ export class LintingProvider {
       const executable: string = this.linterConfiguration.executable;
 
       const filePath: string = textDocument.fileName;
+      const relativeFilePath: string = vscode.workspace.asRelativePath(textDocument.uri.fsPath);
       let diagnostics: vscode.Diagnostic[] = [];
       let filteredDiagnostics: vscode.Diagnostic[] = [];
       let buffer: string = "";
-      const options = vscode.workspace.rootPath ? { cwd: vscode.workspace.rootPath } : undefined;
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(textDocument.uri);
+      const options = workspaceFolder ? { cwd: workspaceFolder.uri.fsPath, shell: true } : undefined;
 
       // Args for flake8
       const args: string[] = [];
       // Verbose output.
       args.push("-v");
+      // Provide the name to use to report warnings and errors from code on stdin.
+      args.push(`--stdin-display-name="${relativeFilePath}"`);
       // Read stdin for file input.
       args.push("-");
 
       // Start flake8 and have it accept input form stdin.
-      const childProcess = cp.spawn(executable, args, options);
+      const childProcess = spawn(executable, args, options);
 
       // Now that flake8 has started write the document to stdin.
       childProcess.stdin.write(textDocument.getText());
@@ -149,7 +153,7 @@ export class LintingProvider {
           return;
         }
 
-        let message: string = null;
+        let message: string;
         if ((<any>error).code === 'ENOENT') {
           message = `Cannot lint ${filePath}. The executable was not found. Use the '${this.linter.settingsSection}.executablePath' setting to configure the location of the executable`;
         } else {
@@ -170,7 +174,6 @@ export class LintingProvider {
         lines = lines.filter((line) => (line !== ""));
         lines = lines.filter((line) => (line !== "\r\n"));
 
-
         if (lines && lines.length > 0) {
           diagnostics = this.linter.process(lines, filePath);
 
@@ -184,7 +187,7 @@ export class LintingProvider {
             } else {
               return acc;
             }
-          }, []);
+          }, [] as vscode.Diagnostic[]);
 
           this.diagnosticCollection.set(textDocument.uri, filteredDiagnostics);
 
@@ -199,9 +202,6 @@ export class LintingProvider {
       childProcess.stderr.on('end', onEndEvent);
       childProcess.stdout.on('data', onDataEvent);
       childProcess.stdout.on('end', onEndEvent);
-
-      resolve();
-
     });
   }
 }

@@ -28,9 +28,9 @@ export default class Flake8LintingProvider implements Linter {
 
   public process(lines: string[], filePath: string): Diagnostic[] {
     let diagnostics: Diagnostic[] = [];
-    let violations: number = 0;
+    let violations = 0;
 
-    violations = this.getViolations(lines);
+    violations = this.getReportedViolations(lines);
 
     if (violations !== 0) {
       diagnostics = this.getDiagnostics(lines, filePath);
@@ -43,7 +43,7 @@ export default class Flake8LintingProvider implements Linter {
   }
 
   private getDiagnostics(lines: string[], filePath: string): Diagnostic[] {
-    const lintRegex = /^(.+):(\d+):(\d+):\s(\S+\d+):?\s(.+)$/;
+    const lintRegex = /^"?(.+?)"?:(\d+):(\d+):\s(\S+\d+):?\s(.+)$/;
 
     // const filePathRegex = new RegExp(filePath);
     const diagnostics: Diagnostic[] = [];
@@ -58,7 +58,7 @@ export default class Flake8LintingProvider implements Linter {
       // processing, might need to change this in the future but for now
       // we can just || it with stdin.
       const matchFile = matches[1];
-      if (matchFile === filePath || matchFile === "stdin") {
+      if (matchFile === filePath || matchFile === workspace.asRelativePath(filePath) || matchFile === "stdin") {
         diagnostics.push({
           range: new Range(parseInt(matches[2]) - 1, 0, parseInt(matches[2]) - 1, Number.MAX_VALUE),
           severity: DiagnosticSeverity.Information,
@@ -73,16 +73,16 @@ export default class Flake8LintingProvider implements Linter {
     return diagnostics;
   }
 
-  private getViolations(lines: string[]): number {
+  private getReportedViolations(lines: string[]): number {
     const violationsRegex = /Found a total of \d+ violations and reported (\d+)$/;
-    let violations: number = 0;
-
+    let violations = 0;
     lines.some(line => {
       const matches = violationsRegex.exec(line);
       if (matches === null) {
         return false;
       }
-      violations = parseInt(matches[1]);
+      console.log(line);
+      violations = parseInt(matches[2]);
       return true;
     });
     return violations;
