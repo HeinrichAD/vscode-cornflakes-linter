@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  # Trigger the workflow on push or pull request,
+  # push only for the develop and master branch,
+  # pull request for develop, master and feature branches.
+  push:
+    branches:
+      - master
+      - develop
+      - "feature/*"
+  pull_request:
+    # don't trigger for draft PRs
+    types: [opened, synchronize, reopened, ready_for_review]
+  # Trigger the workflow on manual dispatch
+  workflow_dispatch:
+
+jobs:
+  test:
+    if: github.event.pull_request.draft == false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up NPM 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: |
+          npm install --ignore-scripts
+
+      - name: Compile
+        run: |
+          npm run compile
+
+      - name: Lint
+        run: |
+          npm run lint

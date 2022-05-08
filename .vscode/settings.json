@@ -1,25 +1,32 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-	"files.exclude": {
-		"out": false // set this to true to hide the "out" folder with the compiled JS files
-	},
-	"search.exclude": {
-		"out": true // set this to false to include "out" folder in search results
-	},
-	"typescript.tsdk": "./node_modules/typescript/lib",
-	"workbench.colorCustomizations": {
-		"activityBar.background": "#846a8e",
-		"activityBar.foreground": "#e7e7e7",
-		"activityBar.inactiveForeground": "#e7e7e799",
-		"activityBarBadge.background": "#c7a858",
-		"activityBarBadge.foreground": "#15202b",
-		"titleBar.activeBackground": "#695471",
-		"titleBar.inactiveBackground": "#69547199",
-		"titleBar.activeForeground": "#e7e7e7",
-		"titleBar.inactiveForeground": "#e7e7e799",
-		"statusBar.background": "#695471",
-		"statusBarItem.hoverBackground": "#846a8e",
-		"statusBar.foreground": "#e7e7e7"
-	},
-	"peacock.color": "#695471" // we want to use the TS server from our node_modules folder to control its version
+  "files.exclude": {
+    "out": false // set this to true to hide the "out" folder with the compiled JS files
+  },
+  "search.exclude": {
+    "out": true // set this to false to include "out" folder in search results
+  },
+  // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
+  "typescript.tsc.autoDetect": "off",
+  // Colors and themes
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#846a8e",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#c7a858",
+    "activityBarBadge.foreground": "#15202b",
+    "titleBar.activeBackground": "#695471",
+    "titleBar.inactiveBackground": "#69547199",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "statusBar.background": "#695471",
+    "statusBarItem.hoverBackground": "#846a8e",
+    "statusBar.foreground": "#e7e7e7"
+  },
+  "peacock.color": "#695471",
+  // Spelling
+  "cSpell.words": [
+    "Glasson",
+    "kevinglasson"
+  ]
 }

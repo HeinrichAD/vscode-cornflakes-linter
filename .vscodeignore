@@ -1,9 +1,12 @@
 .vscode/**
-typings/**
+.vscode-test/**
 out/test/**
-test/**
 src/**
-**/*.map
+typings/**
 .gitignore
-tsconfig.json
+.yarnrc
 vsc-extension-quickstart.md
+**/tsconfig.json
+**/.eslintrc.json
+**/*.map
+**/*.ts

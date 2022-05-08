@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.15.0
+    hooks:
+      - id: eslint
+        entry: node_modules/.bin/eslint
+        args: [--ext, ts, src]
+        additional_dependencies:
+          - typescript-eslint
+        files: \.[jt]sx?$  # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
+  - repo: local
+    hooks:
+      - id: tsconfig
+        name: tsconfig
+        entry: node_modules/.bin/tsc-files
+        language: system
+        files: \.[jt]sx?$  # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
