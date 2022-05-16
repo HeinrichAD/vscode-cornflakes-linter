@@ -10,6 +10,8 @@
   "typescript.tsc.autoDetect": "off",
   // Colors and themes
   "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#846a8e",
+    "activityBar.activeBorder": "#c7a858",
     "activityBar.background": "#846a8e",
     "activityBar.foreground": "#e7e7e7",
     "activityBar.inactiveForeground": "#e7e7e799",
@@ -25,8 +27,10 @@
   },
   "peacock.color": "#695471",
   // Spelling
+  "cSpell.language": "en,en-US",
   "cSpell.words": [
     "Glasson",
-    "kevinglasson"
+    "kevinglasson",
+    "venv"
   ]
 }
