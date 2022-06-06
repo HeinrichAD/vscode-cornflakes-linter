@@ -4,6 +4,7 @@ import { spawn } from 'child_process';
 import * as vscode from 'vscode';
 
 import { ThrottledDelayer } from './async';
+import getDocumentText from './document';
 
 
 enum RunTrigger {
@@ -144,7 +145,7 @@ export class LintingProvider {
       const childProcess = spawn(executable, args, options);
 
       // Now that flake8 has started write the document to stdin.
-      childProcess.stdin.write(textDocument.getText());
+      childProcess.stdin.write(getDocumentText(textDocument));
       childProcess.stdin.end();
 
       childProcess.on('error', (error: Error) => {
