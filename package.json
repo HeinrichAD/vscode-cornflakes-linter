@@ -2,7 +2,7 @@
   "name": "cornflakes-linter",
   "displayName": "cornflakes-linter",
   "description": "Wrapper for Python flake8 linter and associated plugins. It rectifies current issues with displaying ALL flake8 problems in the problems tab.",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "publisher": "kevinglasson",
   "icon": "images/cereals.png",
   "categories": [
